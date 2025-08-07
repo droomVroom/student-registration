@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nimbus - Responsive Banking UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(115deg, #e3f2fd 60%, #bbdefb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .bank-ui-container {
+      background: #fff;
+      padding: 2.2rem 2.7rem 2.3rem 2.7rem;
+      box-shadow: 0 3px 18px rgba(33,150,243,0.08);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 340px;
+      max-width: 90vw;
+      gap: 2.1rem;
+      transition: box-shadow 0.22s;
+    }
+
+    .ui-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 1.8px;
+      color: #1976d2;
+      margin-bottom: 0.7rem;
+      text-align: center;
+    }
+
+    .balance-card {
+      background: linear-gradient(90deg, #1976d2 65%, #90caf9 100%);
+      color: #fff;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 1.3rem 2rem;
+      border-radius: 12px;
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 1.2px;
+      box-shadow: 0 1px 9px rgba(33,150,243,0.08);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 1.15rem;
+      margin-top: 1.1rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 100px;
+      max-width: 150px;
+      padding: 0.85em 0;
+      font-size: 1.08rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.16s;
+      box-shadow: 0 2px 7px rgba(33,150,243, 0.07);
+    }
+
+    .action-btn.deposit {
+      background: #43a047;
+      color: #fff;
+    }
+    .action-btn.deposit:hover {
+      background: #388e3c;
+    }
+
+    .action-btn.withdraw {
+      background: #ef5350;
+      color: #fff;
+    }
+    .action-btn.withdraw:hover {
+      background: #c62828;
+    }
+
+    @media (max-width: 600px) {
+      .bank-ui-container {
+        padding: 1rem 0.8rem 1.2rem 0.8rem;
+        min-width: 92vw;
+        max-width: 98vw;
+        border-radius: 13px;
+      }
+      .balance-card {
+        font-size: 1.17rem;
+        padding: 0.95rem 0.5rem;
+      }
+      .button-row {
+        gap: 0.5rem;
+      }
+      .action-btn {
+        font-size: 0.97rem;
+        padding: 0.7em 0;
+        min-width: 85px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bank-ui-container">
+    <div class="ui-title">Nimbus Bank</div>
+    <div class="balance-card">Balance: ₹5,000.00</div>
+    <div class="button-row">
+      <button class="action-btn deposit" type="button" disabled>Deposit</button>
+      <button class="action-btn withdraw" type="button" disabled>Withdraw</button>
+    </div>
+  </div>
+</body>
+</html>
