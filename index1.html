@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Banking Interface</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #f2f2f2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+    }
+
+    .bank-container {
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      min-width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      max-width: 96vw;
+    }
+
+    .balance-card {
+      background: linear-gradient(90deg, #00bcd4 60%, #009688 100%);
+      color: #fff;
+      padding: 1.5rem 2.5rem;
+      border-radius: 12px;
+      font-size: 2rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,188,212,0.12);
+      box-sizing: border-box;
+      width: 100%;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+      align-items: center;
+    }
+
+    .actions input[type="number"] {
+      padding: 0.7rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 0.25rem;
+    }
+
+    .actions button {
+      margin-top: 0.1rem;
+      padding: 0.7rem 1.7rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      background: #00bcd4;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.18s;
+      box-shadow: 0 1px 4px rgba(0,188,212,0.06);
+    }
+    .actions button.withdraw {
+      background: #ff5252;
+    }
+    .actions button:hover {
+      opacity: 0.92;
+    }
+
+    .message {
+      min-height: 1.5em;
+      font-size: 1em;
+      color: #e53935;
+      margin-top: 0.6em;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      .bank-container {
+        padding: 1.1rem 1rem;
+        min-width: 90vw;
+      }
+      .balance-card {
+        font-size: 1.25rem;
+        padding: 1.1rem 0.2rem;
+      }
+      .actions input[type="number"] {
+        font-size: 1rem;
+      }
+      .actions button {
+        font-size: 0.98rem;
+        padding: 0.6rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bank-container">
+    <div class="balance-card" id="balanceCard">
+      Balance: ₹<span id="balance">5000.00</span>
+    </div>
+    <div class="actions">
+      <input type="number" id="amount" min="1" step="1" placeholder="Enter amount (₹)">
+      <div style="display:flex; gap:1rem; width:100%; justify-content:center;">
+        <button id="depositBtn">Deposit</button>
+        <button id="withdrawBtn" class="withdraw">Withdraw</button>
+      </div>
+      <div class="message" id="message"></div>
+    </div>
+  </div>
+  <script>
+    let balance = 5000.00;
+    const balanceElem = document.getElementById('balance');
+    const amountInput = document.getElementById('amount');
+    const depositBtn = document.getElementById('depositBtn');
+    const withdrawBtn = document.getElementById('withdrawBtn');
+    const messageElem = document.getElementById('message');
+
+    function updateBalance() {
+      balanceElem.textContent = balance.toFixed(2);
+    }
+
+    function showMessage(msg, isError = true) {
+      messageElem.style.color = isError ? '#e53935' : '#43a047';
+      messageElem.textContent = msg;
+      setTimeout(() => {
+        messageElem.textContent = '';
+      }, 2500);
+    }
+
+    depositBtn.onclick = function() {
+      const amt = parseFloat(amountInput.value);
+      if (isNaN(amt) || amt <= 0) {
+        showMessage('Enter a valid deposit amount.');
+        return;
+      }
+      balance += amt;
+      updateBalance();
+      showMessage(`Deposited ₹${amt.toFixed(2)}`, false);
+      amountInput.value = '';
+    };
+
+    withdrawBtn.onclick = function() {
+      const amt = parseFloat(amountInput.value);
+      if (isNaN(amt) || amt <= 0) {
+        showMessage('Enter a valid withdraw amount.');
+        return;
+      }
+      if (amt > balance) {
+        showMessage('Insufficient balance.');
+        return;
+      }
+      balance -= amt;
+      updateBalance();
+      showMessage(`Withdrew ₹${amt.toFixed(2)}`, false);
+      amountInput.value = '';
+    };
+    amountInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        depositBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
