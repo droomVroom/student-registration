@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --header-bg: #1976d2;
+      --header-fg: #ffffff;
+      --sidebar-bg: #f5f8fa;
+      --sidebar-fg: #222222;
+      --sidebar-active-bg: #1976d2;
+      --sidebar-active-fg: #ffffff;
+      --main-bg: #fafcff;
+      --main-fg: #222222;
+      --footer-bg: #ececec;
+      --footer-fg: #555555;
+      --accent-color: #1976d2;
+      --transition-time: 0.3s;
+    }
+    body.dark-theme {
+      --header-bg: #23272f;
+      --header-fg: #f8f8f8;
+      --sidebar-bg: #1a1c22;
+      --sidebar-fg: #e0e0e0;
+      --sidebar-active-bg: #4248ea;
+      --sidebar-active-fg: #ffffff;
+      --main-bg: #23272f;
+      --main-fg: #fafafa;
+      --footer-bg: #181920;
+      --footer-fg: #aaaaaa;
+      --accent-color: #4248ea;
+    }
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--main-bg);
+      color: var(--main-fg);
+      transition: background-color var(--transition-time), color var(--transition-time);
+    }
+    body {
+      display: grid;
+      grid-template-rows: 64px 1fr 42px;
+      grid-template-columns: 220px 1fr;
+      grid-template-areas:
+        "header header"
+        "sidebar main"
+        "footer footer";
+      min-height: 100vh;
+    }
+
+    header {
+      grid-area: header;
+      background-color: var(--header-bg);
+      color: var(--header-fg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      font-weight: 600;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: background-color var(--transition-time), color var(--transition-time);
+    }
+    .theme-switch {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 1rem;
+      user-select: none;
+      gap: 0.5rem;
+    }
+
+    .theme-switch input[type="checkbox"] {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-color);
+    }
+
+    aside {
+      grid-area: sidebar;
+      background-color: var(--sidebar-bg);
+      color: var(--sidebar-fg);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-right: 1px solid #e4e7ea;
+      transition: background-color var(--transition-time), color var(--transition-time);
+      min-width: 180px;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 0.8rem 1.75rem;
+      text-decoration: none;
+      color: var(--sidebar-fg);
+      font-weight: 500;
+      border-radius: 7px 0 0 7px;
+      transition: background-color 0.25s, color 0.25s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: var(--sidebar-active-bg);
+      color: var(--sidebar-active-fg);
+    }
+
+    main {
+      grid-area: main;
+      background-color: var(--main-bg);
+      color: var(--main-fg);
+      padding: 2rem 2rem 2rem 2rem;
+      overflow-y: auto;
+      transition: background-color var(--transition-time), color var(--transition-time);
+    }
+
+    main h2 {
+      color: var(--accent-color);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: 1.5px;
+    }
+
+    .content-placeholder {
+      border: 2px dashed var(--accent-color);
+      border-radius: 12px;
+      padding: 3rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-align: center;
+      color: var(--accent-color);
+      background-color: var(--main-bg);
+      opacity: 0.7;
+    }
+
+    footer {
+      grid-area: footer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--footer-bg);
+      color: var(--footer-fg);
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      box-shadow: 0 -1px 7px rgba(0, 0, 0, 0.05);
+      transition: background-color var(--transition-time), color var(--transition-time);
+    }
+    @media (max-width: 900px) {
+      body {
+        grid-template-columns: 60px 1fr;
+        grid-template-rows: 64px 1fr 42px;
+        grid-template-areas:
+          "header header"
+          "sidebar main"
+          "footer footer";
+      }
+      aside {
+        min-width: 60px;
+        padding-top: 1rem;
+        align-items: center;
+      }
+      .nav-link {
+        padding: 0.8rem 0.6rem;
+        font-size: 0.9rem;
+        text-align: center;
+        border-radius: 0;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        border-radius: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        grid-template-columns: 1fr;
+        grid-template-rows: 58px 1fr 38px;
+        grid-template-areas:
+          "header"
+          "main"
+          "footer";
+      }
+      aside {
+        display: none;
+      }
+      main {
+        padding: 1.5rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>Admin Dashboard</div>
+    <label class="theme-switch">
+      <input type="checkbox" id="themeToggle" aria-label="Toggle Dark Mode" />
+      Dark Mode
+    </label>
+  </header>
+
+  <aside>
+    <nav>
+      <a href="#" class="nav-link active">Home</a>
+      <a href="#" class="nav-link">Users</a>
+      <a href="#" class="nav-link">Settings</a>
+    </nav>
+  </aside>
+
+  <main>
+    <h2>Welcome to the Dashboard</h2>
+    <div class="content-placeholder">
+      [ Data visualization, reports, or welcome messages go here. ]
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Nimbus Admin. All rights reserved.
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-theme');
+      themeToggle.checked = true;
+    }
+    themeToggle.addEventListener('change', () => {
+      if (themeToggle.checked) {
+        document.body.classList.add('dark-theme');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-theme');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>
