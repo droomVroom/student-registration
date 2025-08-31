@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple SVG Drawing Tool</title>
+  <style>
+    body { margin: 0; }
+    #toolbar { padding: 10px; background: #eee; }
+    #stage { border: 1px solid #333; width: 100%; height: 90vh; display: block; }
+    button { margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <div id="toolbar">
+    <button onclick="setMode('rect')">Rectangle</button>
+    <button onclick="setMode('circle')">Circle</button>
+    <button onclick="setMode('line')">Line</button>
+  </div>
+  <svg id="stage"></svg>
+  <script>
+    const svg = document.getElementById("stage");
+    let mode = "rect";
+    let drawing = null, start = null;
+
+    function setMode(m) { mode = m; }
+
+    function getPoint(e) {
+      const rect = svg.getBoundingClientRect();
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+    svg.addEventListener("mousedown", e => {
+      start = getPoint(e);
+      if (mode === "rect") {
+        drawing = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        drawing.setAttribute("x", start.x);
+        drawing.setAttribute("y", start.y);
+        drawing.setAttribute("width", 0);
+        drawing.setAttribute("height", 0);
+        drawing.setAttribute("stroke", "black");
+        drawing.setAttribute("fill", "transparent");
+      } else if (mode === "circle") {
+        drawing = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        drawing.setAttribute("cx", start.x);
+        drawing.setAttribute("cy", start.y);
+        drawing.setAttribute("r", 0);
+        drawing.setAttribute("stroke", "black");
+        drawing.setAttribute("fill", "transparent");
+      } else if (mode === "line") {
+        drawing = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        drawing.setAttribute("x1", start.x);
+        drawing.setAttribute("y1", start.y);
+        drawing.setAttribute("x2", start.x);
+        drawing.setAttribute("y2", start.y);
+        drawing.setAttribute("stroke", "black");
+      }
+      svg.appendChild(drawing);
+    });
+    svg.addEventListener("mousemove", e => {
+      if (!drawing) return;
+      const p = getPoint(e);
+      if (mode === "rect") {
+        drawing.setAttribute("x", Math.min(start.x, p.x));
+        drawing.setAttribute("y", Math.min(start.y, p.y));
+        drawing.setAttribute("width", Math.abs(p.x - start.x));
+        drawing.setAttribute("height", Math.abs(p.y - start.y));
+      } else if (mode === "circle") {
+        const r = Math.hypot(p.x - start.x, p.y - start.y);
+        drawing.setAttribute("r", r);
+      } else if (mode === "line") {
+        drawing.setAttribute("x2", p.x);
+        drawing.setAttribute("y2", p.y);
+      }
+    });
+    svg.addEventListener("mouseup", () => drawing = null);
+  </script>
+</body>
+</html>
